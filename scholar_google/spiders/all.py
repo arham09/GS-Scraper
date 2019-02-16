@@ -7,16 +7,15 @@ from selenium.common.exceptions import NoSuchElementException
 from scrapy.selector import Selector
 from scrapy.http import Request
 
-from twisted.internet.error import ConnectionRefusedError
 
-class ScholarSpider(Spider):
-    name = 'scholar'
+class AllSpider(Spider):
+    name = 'all'
     allowed_domains = ['scholar.google.com']
-    #start_urls = ['https://scholar.google.com/citations?view_op=view_org&hl=id&org=1388872056037598937']
-            
+    start_urls = ['https://scholar.google.com/citations?view_op=view_org&hl=id&org=1388872056037598937']
+
     def parse(self, response):
         self.driver = webdriver.Chrome('/home/arham/Webdriver/chromedriver_linux64/chromedriver')         
-        self.driver.get('https://scholar.google.com/citations?view_op=view_org&hl=id&org=1388872056037598937')
+        self.driver.get(response.url)
 
         sel = Selector(text=self.driver.page_source)    
         users = sel.xpath('//div[@id="gsc_sa_ccl"]/div[@class="gsc_1usr gs_scl"]/div[@class="gsc_oai"]/h3[@class="gsc_oai_name"]/a/@href').extract()
